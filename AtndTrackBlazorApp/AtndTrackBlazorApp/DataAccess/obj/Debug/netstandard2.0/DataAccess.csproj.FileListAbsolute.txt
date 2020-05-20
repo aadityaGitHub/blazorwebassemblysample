@@ -1,0 +1,5 @@
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\bin\Debug\netstandard2.0\DataAccess.deps.json
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\bin\Debug\netstandard2.0\DataAccess.dll
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.0\DataAccess.csprojAssemblyReference.cache
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.0\DataAccess.AssemblyInfoInputs.cache
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.0\DataAccess.AssemblyInfo.cs

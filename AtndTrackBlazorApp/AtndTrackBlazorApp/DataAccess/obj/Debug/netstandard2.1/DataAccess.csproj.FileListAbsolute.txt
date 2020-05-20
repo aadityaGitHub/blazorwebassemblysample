@@ -1,0 +1,12 @@
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\bin\Debug\netstandard2.1\DataAccess.deps.json
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\bin\Debug\netstandard2.1\DataAccess.dll
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\bin\Debug\netstandard2.1\DataAccess.pdb
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\bin\Debug\netstandard2.1\AtndTrackBlazorApp.Shared.dll
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\bin\Debug\netstandard2.1\AtndTrackBlazorApp.Shared.pdb
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.1\DataAccess.csprojAssemblyReference.cache
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.1\DataAccess.csproj.CoreCompileInputs.cache
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.1\DataAccess.AssemblyInfoInputs.cache
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.1\DataAccess.AssemblyInfo.cs
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.1\DataAccess.csproj.CopyComplete
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.1\DataAccess.dll
+E:\Samples\BlazorSamples\AtndTrack\AtndTrackBlazorApp\AtndTrackBlazorApp\DataAccess\obj\Debug\netstandard2.1\DataAccess.pdb
