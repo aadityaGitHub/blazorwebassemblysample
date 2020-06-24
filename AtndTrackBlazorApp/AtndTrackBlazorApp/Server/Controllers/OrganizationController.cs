@@ -32,33 +32,23 @@ namespace AtndTrackBlazorApp.Server.Controllers
         [HttpPost("savedepartment")]
         public async Task<bool> SaveDepartment(DepartmentModel departmentModel)
         {
-            var result = await _mediator.Send<CommandResult<bool>>(new DepartmentSaveCommand<bool>() { Model = departmentModel }).ConfigureAwait(false);
+            var result = await _mediator.Send<CommandResult<bool>>(new DepartmentSaveCommand() { Model = departmentModel }).ConfigureAwait(false);
             return result.ResponseObj;
         }
 
-        // GET: api/Organization/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // GET: api/Organization
+        [HttpGet("designations")]
+        public async Task<IEnumerable<DesignationModel>> GetDesignations()
         {
-            return "value";
+            var lst = await _mediator.Send<CommandResult<DesignationModel[]>>(new DesignationCommand() { SearchName = string.Empty }).ConfigureAwait(false);
+            return lst.ResponseObj; //?.ResponseObj as IEnumerable<DesignationModel>;
         }
 
-        // POST: api/Organization
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("savedesignation")]
+        public async Task<bool> SaveDesignation(DesignationModel DesignationModel)
         {
-        }
-
-        // PUT: api/Organization/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var result = await _mediator.Send<CommandResult<bool>>(new DesignationSaveCommand() { Model = DesignationModel }).ConfigureAwait(false);
+            return result.ResponseObj;
         }
     }
 }

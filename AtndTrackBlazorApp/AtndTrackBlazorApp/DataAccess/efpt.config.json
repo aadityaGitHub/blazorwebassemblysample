@@ -14,7 +14,35 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "[Atnd].[Departments]"
+         "Name": "[Atnd].[Department]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[Designation]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[Employee]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[JobDetail]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[LeaveRequests]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[LeaveType]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[Roles]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[User]"
       }
    ],
    "UseDatabaseNames": false,

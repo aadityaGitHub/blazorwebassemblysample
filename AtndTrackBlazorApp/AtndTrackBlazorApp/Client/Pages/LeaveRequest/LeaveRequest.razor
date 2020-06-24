@@ -1,0 +1,86 @@
+﻿@page "/";
+@page "/leaverequest";
+@inject HttpClient httpClient;
+@using AtndTrackBlazorApp.Shared.Models
+@using AtndTrackBlazorApp.Shared
+
+@if (LeaveRequestModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="card">
+        <div class="top-heading px-4">
+            <div class="text-heading col-6 float-left">
+                <h5>LeaveRequests</h5>
+            </div>
+            <div class="button-heading  col-6 float-right">
+                <NavLink class="nav-link" href="LeaveRequest/0">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>Add LeaveRequests
+                </NavLink>&nbsp;
+            </div>
+        </div>
+        <div class="card-body col-sm-12">
+            <table  border="1">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Email Alert To</th>
+                        <th>Type of Leave</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in LeaveRequestModels)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.EmployeeName</td>
+                            <td>@item.DateFrom?.ToString("dd-MM-yy")</td>
+                            <td>@item.DateTo?.ToString("dd-MM-yy")</td>
+                            <td>@item.EamilAlertTo</td>
+                            <td>@Enum.GetName(typeof(LeaveTypes), item.LeaveTypeId)</td>
+                            <td>@item.Status</td>
+                            <td>
+                                <div class="form-inline">
+                                    <NavLink class="nav-link" href="@($"LeaveRequest/{item.Id}")">
+                                        Edit
+                                    </NavLink>
+                                    <NavLink class="nav-link">
+                                        Delete
+                                    </NavLink>
+                                    @if (item.LeaveTypeId == (int)LeaveStatusTypes.Pending)
+                                    {
+                                        <NavLink class="nav-link" href="@($"leaverequestresponse/{item.Id}/{(int)LeaveStatusTypes.Approved}")">
+                                            Approve
+                                        </NavLink>
+                                    }
+                                    @if ((item.LeaveTypeId == (int)LeaveStatusTypes.Pending || item.LeaveTypeId == (int)LeaveStatusTypes.Approved) && item.LeaveTypeId != (int)LeaveStatusTypes.Approved)
+                                    {<NavLink class="nav-link" href="@($"leaverequestresponse/{item.Id}/{(int)LeaveStatusTypes.Declined}")">
+                                            Decline
+                                        </NavLink>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@code {
+
+    private LeaveRequestModel[] LeaveRequestModels;
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await httpClient.GetJsonAsync<LeaveRequestModel[]>("api/LeaveRequest").ConfigureAwait(false);
+        Console.WriteLine("respnose " + System.Text.Json.JsonSerializer.Serialize(response));
+        LeaveRequestModels = response;
+    }
+}

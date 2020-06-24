@@ -1,0 +1,79 @@
+﻿@inject HttpClient _httpClient;
+@using AtndTrackBlazorApp.Shared.Models;
+@if (jobDetailModel1.JobDetail != null && jobDetailModel1.JobDetail.Length > 0)
+{
+    <fieldset>
+        <div>Work Experience</div>
+        <hr />
+        <div class="row col-12">
+            <div class="col-6 float-left">
+                <div class="form-row">
+                    <label class="col-md-4 col-form-label-sm">Eamil Alert To</label>
+                    <div>
+                        <InputText class="form-control-sm" @bind-Value="jobDetailModel1.JobDetail.FirstOrDefault().EmailAlertTo" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label class="col-md-4 col-form-label-sm">Previous Company Name</label>
+                    <div>
+                        <InputText class="form-control-sm" @bind-Value="jobDetailModel1.JobDetail.FirstOrDefault().PreviousCompany" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label class="col-md-4 col-form-label-sm">Joining Date</label>
+                    <div>
+                        <InputDate class="form-control-sm" @bind-Value="jobDetailModel1.JobDetail.FirstOrDefault().JoiningDate" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label class="col-md-4 col-form-label-sm">Releaving Date</label>
+                    <div>
+                        <InputDate class="form-control-sm" @bind-Value="jobDetailModel1.JobDetail.FirstOrDefault().ReleavingDate" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 float-right">
+                <div class="form-row">
+                    <label class="col-md-4 col-form-label-sm">Leaves Allocated</label>
+                    <div>
+                        <InputNumber @bind-Value="jobDetailModel1.JobDetail.FirstOrDefault().LeavesAllocated" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label class="col-md-4 col-form-label-sm">PreviousExp</label>
+                    <div>
+                        <InputNumber @bind-Value="jobDetailModel1.JobDetail.FirstOrDefault().PreviousExp" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label class="col-md-4 col-form-label-sm">Reporting To</label>
+                    <div>
+                        <select class="form-control-sm" @bind="jobDetailModel1.JobDetail.FirstOrDefault().EmployeeId">
+                            @if (EmployeeModels != null)
+                            {
+                                @foreach (var item in EmployeeModels)
+                                {
+                                    <option value="@item.Id">@item.FirstName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+@code {
+    [Parameter]
+    public EmployeeModel jobDetailModel1 { get; set; }
+
+    private EmployeeModel[] EmployeeModels = new List<EmployeeModel>().ToArray();
+    protected override async Task OnInitializedAsync()
+    {
+        if (jobDetailModel1?.JobDetail?.Length == 0) jobDetailModel1.JobDetail = new JobDetailModel[] { new JobDetailModel() };
+        var response = await _httpClient.GetJsonAsync<EmployeeModel[]>("api/Employee").ConfigureAwait(false);
+        Console.WriteLine("respnose ", response);
+        EmployeeModels = response;
+    }
+
+}

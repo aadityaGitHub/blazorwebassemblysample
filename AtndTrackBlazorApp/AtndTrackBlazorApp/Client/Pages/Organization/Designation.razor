@@ -1,10 +1,11 @@
-﻿@page "/department"
+﻿
+@page "/designation"
 @inject HttpClient httpClient;
 @using AtndTrackBlazorApp.Shared.Models
 @using AtndTrackBlazorApp.Shared
 
-<h3>Department</h3>
-@if (departmentModels == null)
+<h3>Designation</h3>
+@if (DesignationModels == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -13,8 +14,8 @@ else
     <div>
         <div class=" card">
             <div class="card-body">
-                <NavLink class="nav-link" href="department/0">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span>Add Departments
+                <NavLink class="nav-link" href="designation/0">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>Add Designations
                 </NavLink>
             </div>
         </div>
@@ -23,14 +24,14 @@ else
                 <tr><th>Id</th><th>Name</th><th>Actins</th></tr>
             </thead>
             <tbody>
-                @foreach (var item in departmentModels)
+                @foreach (var item in DesignationModels)
                 {
                     <tr>
-                        <td>@item.Id</td>
+                        <td>@item.DesignationId</td>
                         <td>@item.Name</td>
                         <td>
                             <div class="form-inline">
-                                <NavLink class="nav-link" href="@($"department/{item.Id}")">
+                                <NavLink class="nav-link" href="@($"Designation/{item.DesignationId}")">
                                     <span class="oi oi-external-link" aria-hidden="true"></span>Edit
                                 </NavLink>
                                 <NavLink class="nav-link">
@@ -46,11 +47,11 @@ else
 }
 @code {
 
-    private DepartmentModel[] departmentModels;
+    private DesignationModel[] DesignationModels;
     protected override async Task OnInitializedAsync()
     {
-        var response = await httpClient.GetJsonAsync<DepartmentModel[]>("api/Organization/departments").ConfigureAwait(false);
+        var response = await httpClient.GetJsonAsync<DesignationModel[]>("api/Organization/Designations").ConfigureAwait(false);
         Console.WriteLine("respnose ", response);
-        departmentModels = response;
+        DesignationModels = response;
     }
 }

@@ -1,0 +1,61 @@
+﻿@page "/employee"
+@inject HttpClient httpClient;
+@using AtndTrackBlazorApp.Shared.Models
+@using AtndTrackBlazorApp.Shared
+
+@if (EmployeeModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="card">
+        <div class="top-heading px-4">
+            <div class="text-heading col-6 float-left">
+                <h5>Employee</h5>
+            </div>
+            <div class="button-heading  col-6 float-right">
+                <NavLink class="nav-link" href="Employee/0">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>Add Employees
+                </NavLink>
+            </div>
+        </div>
+        <div class="card-body col-sm-12">
+
+            <table class="col-sm-12">
+                <thead>
+                    <tr><th>Id</th><th>Name</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in EmployeeModels)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.FirstName</td>
+                            <td>
+                                <div class="form-inline">
+                                    <NavLink class="nav-link" href="@($"Employee/{item.Id}")">
+                                        <span class="oi oi-external-link" aria-hidden="true"></span>Edit
+                                    </NavLink>
+                                    <NavLink class="nav-link">
+                                        <span class="oi oi-delete" aria-hidden="true"></span>Delete
+                                    </NavLink>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+@code {
+
+    private EmployeeModel[] EmployeeModels;
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await httpClient.GetJsonAsync<EmployeeModel[]>("api/Employee").ConfigureAwait(false);
+        Console.WriteLine("respnose ", response);
+        EmployeeModels = response;
+    }
+}

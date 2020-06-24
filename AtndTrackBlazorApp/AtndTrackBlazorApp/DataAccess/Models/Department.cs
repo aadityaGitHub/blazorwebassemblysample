@@ -4,9 +4,17 @@ using System.Collections.Generic;
 
 namespace DataAccess.Models
 {
-    public partial class Departments 
+    public partial class Department
     {
+        public Department()
+        {
+            Employee = new HashSet<Employee>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsActive { get; set; }
+
+        public virtual ICollection<Employee> Employee { get; set; }
     }
 }

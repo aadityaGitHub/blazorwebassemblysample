@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AtndTrackBlazorApp.Server.Commands
+namespace AtndTrackBlazorApp.Server.Commands.LeaveRequest
 {
-    public class DepartmentSaveCommand<T> : IRequest<CommandResult<T>>
+    public class LeaveRequestSaveCommand : IRequest<CommandResult<bool>>
     {
-        public DepartmentModel Model { get; set; }
+        public LeaveRequestModel Model { get; set; }
     }
 }

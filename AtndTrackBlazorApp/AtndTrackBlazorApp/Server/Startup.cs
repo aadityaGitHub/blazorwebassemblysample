@@ -12,6 +12,8 @@ using DataAccess.Repositories;
 using MediatR;
 using AtndTrackBlazorApp.Server.Commands;
 using AtndTrackBlazorApp.Shared.Models;
+using AutoMapper;
+using DataAccess;
 
 namespace AtndTrackBlazorApp.Server
 {
@@ -35,7 +37,10 @@ namespace AtndTrackBlazorApp.Server
                 options.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:ConnectionString"));
             });
             services.AddScoped<IOrganizationRepo, OrganizationRepo>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            services.AddScoped<ILeaveRequestRepo, LeaveRequestRepo>();
             services.AddMediatR(typeof(DepartmentCommand).Assembly);
+            services.AddAutoMapper(typeof(MappingConfig));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

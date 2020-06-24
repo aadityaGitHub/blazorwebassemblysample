@@ -1,4 +1,4 @@
-﻿@page "/department/{id}"
+﻿@page "/designation/{id}"
 @using AtndTrackBlazorApp.Shared.Models;
 @using AtndTrackBlazorApp.Shared;
 @inject HttpClient _httpClient;
@@ -8,11 +8,9 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="form-row">
-        <div class="col">
-            <label>Name</label>
-        </div>
-        <div class="col">
+    <div class="form-group">
+        <label>Name</label>
+        <div>
             <InputText class="form-control" @bind-Value="departmentModel.Name" />
         </div>
     </div>
@@ -33,7 +31,7 @@
         if (deptId != 0)
         {
             departmentModel.Id = deptId;
-            var result = await _httpClient.GetJsonAsync<DepartmentModel[]>("api/Organization/departments").ConfigureAwait(false);
+            var result = await _httpClient.GetJsonAsync<DepartmentModel[]>("api/Organization/designations").ConfigureAwait(false);
             if (result != null) { departmentModel = result.FirstOrDefault(o => o.Id == deptId); }
         }
     }
@@ -43,7 +41,7 @@
         Console.WriteLine("IN Save Dept");
         int.TryParse(id, out int deptId);
         departmentModel.Id = deptId;
-        var result = await _httpClient.PostJsonAsync<bool>("api/Organization/savedepartment", departmentModel).ConfigureAwait(false);
+        var result = await _httpClient.PostJsonAsync<bool>("api/Organization/savedesignation", departmentModel).ConfigureAwait(false);
         if (result) router.NavigateTo("/department");
     }
 }
