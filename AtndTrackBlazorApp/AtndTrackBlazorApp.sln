@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtndTrackBlazorApp.Server", "AtndTrackBlazorApp\Server\AtndTrackBlazorApp.Server.csproj", "{868E7BC4-C0D6-447B-B903-FF28D6DB3176}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtndTrackBlazorApp.Server", "AtndTrackBlazorApp\Server\AtndTrackBlazorApp.Server.csproj", "{868E7BC4-C0D6-447B-B903-FF28D6DB3176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtndTrackBlazorApp.Client", "AtndTrackBlazorApp\Client\AtndTrackBlazorApp.Client.csproj", "{1AB38790-161D-405B-96F3-92406233E442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtndTrackBlazorApp.Client", "AtndTrackBlazorApp\Client\AtndTrackBlazorApp.Client.csproj", "{1AB38790-161D-405B-96F3-92406233E442}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtndTrackBlazorApp.Shared", "AtndTrackBlazorApp\Shared\AtndTrackBlazorApp.Shared.csproj", "{17201EC1-1911-458F-AA7F-399943CEE6EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtndTrackBlazorApp.Shared", "AtndTrackBlazorApp\Shared\AtndTrackBlazorApp.Shared.csproj", "{17201EC1-1911-458F-AA7F-399943CEE6EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "AtndTrackBlazorApp\DataAccess\DataAccess.csproj", "{172F1C22-2CFE-4727-BEF3-0057B1CC63B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "AtndTrackBlazorApp\DataAccess\DataAccess.csproj", "{172F1C22-2CFE-4727-BEF3-0057B1CC63B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿@page "/leaverequest/{id:int}"
+﻿@page "/leaverequest"
 @using AtndTrackBlazorApp.Shared.Models;
 @using AtndTrackBlazorApp.Shared;
 @using System.Linq;
@@ -12,19 +12,19 @@
                 <h5>Add Leave Requests</h5>
             </div>
             <div class="button-heading  col-6 float-right">
-                <a type="submit" class="btn-sm btn-success"><span class=" oi oi-clipboard" aria-hidden="true"></span>&nbsp;Submit</a>
-                <NavLink class="btn-sm btn-secondary btnCancel" href="LeaveRequest">
+                <button type="submit"  class="btn-sm btn-success"><span class=" oi oi-clipboard" aria-hidden="true"></span>&nbsp;Submit</button>
+                <NavLink class="btn-sm btn-secondary btnCancel" href="LeaveRequests">
                     <span class="oi oi-arrow-left" aria-hidden="true"></span>&nbsp;Cancel
                 </NavLink>&nbsp;
             </div>
         </div>
         <div class="card-body col-sm-12">
             @*<div>
-                <div class="row col-12">
-                    <div class="text-right col-8">
+                    <div class="row col-12">
+                        <div class="text-right col-8">
+                        </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
             <DataAnnotationsValidator />
             <ValidationSummary />
             <fieldset>
@@ -92,22 +92,41 @@
 
                 </div>
             </fieldset>
-            </div>
         </div>
+    </div>
 </EditForm>
 
 @code {
-    [Parameter]
     public int id { get; set; }
+    [Parameter]
+    public int empid { get; set; }
     DateTimeOffset? DateFrom { get; set; } = DateTime.Today.AddMonths(-1);
     DateTimeOffset? DateTo { get; set; } = DateTime.Today.AddDays(1).AddTicks(-1);
     private LeaveRequestModel LeaveRequestModel = new LeaveRequestModel();
     private EmployeeModel[] EmployeeModels = new List<EmployeeModel>().ToArray();
+    protected override void OnParametersSet()
+    {
+        var qs = router.ToAbsoluteUri(router.Uri).Query;
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(qs);
+        if (query.TryGetValue("id", out var id_str))
+        {
+            if (Int32.TryParse(id_str, out int reqId))
+            {
+                this.id = reqId;
+            }
+        }
+        if (query.TryGetValue("empid", out var key))
+        {
+            int.TryParse(key, out int empid);
+            this.empid = empid;
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
+
         Console.WriteLine("IN Save Dept");
-        if (id != default(int))
+        if (id>0)
         {
             LeaveRequestModel.Id = id;
             var result = await _httpClient.GetJsonAsync<LeaveRequestModel[]>("api/LeaveRequest").ConfigureAwait(false);
@@ -115,19 +134,31 @@
         }
         else
         {
-            LeaveRequestModel.DateFrom  = DateTime.Today.AddMonths(-1);
-            LeaveRequestModel.DateTo  = DateTime.Today.AddDays(1).AddTicks(-1);
+            LeaveRequestModel.DateFrom = DateTime.Today.AddMonths(-1);
+            LeaveRequestModel.DateTo = DateTime.Today.AddDays(1).AddTicks(-1);
         }
         var response = await _httpClient.GetJsonAsync<EmployeeModel[]>("api/Employee").ConfigureAwait(false);
-        Console.WriteLine("respnose " + System.Text.Json.JsonSerializer.Serialize(response));
         EmployeeModels = response;
     }
 
     private async Task SaveLeaveRequest()
     {
-        Console.WriteLine("IN Save Dept");
-        LeaveRequestModel.Id = id;
-        var result = await _httpClient.PostJsonAsync<bool>("api/LeaveRequest", LeaveRequestModel).ConfigureAwait(false);
-        if (result) router.NavigateTo("/LeaveRequest");
+        try
+        {
+
+
+            LeaveRequestModel.Id = id;
+            LeaveRequestModel.EmployeeId = empid;
+            Console.WriteLine("IN Save Dept",System.Text.Json.JsonSerializer.Serialize(LeaveRequestModel));
+            var result = await _httpClient.PostJsonAsync<bool>("api/LeaveRequest", LeaveRequestModel).ConfigureAwait(false);
+            Console.WriteLine("respnose " + result);
+
+            //if (result) router.NavigateTo("/LeaveRequest");
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 }

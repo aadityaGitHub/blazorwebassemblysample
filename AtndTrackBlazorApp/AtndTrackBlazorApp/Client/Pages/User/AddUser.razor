@@ -1,0 +1,94 @@
+﻿@page "/user/{id:int}"
+@using AtndTrackBlazorApp.Shared.Models;
+
+@inject HttpClient _httpClient;
+@inject NavigationManager router;
+<h3>AddUser</h3>
+
+<EditForm Model="@user" OnValidSubmit="Save">
+    <div class="card">
+        <div class="top-heading px-4">
+            <div class="text-heading col-6 float-left">
+                <h5>Add Employee</h5>
+            </div>
+            <div class="button-heading  col-6 float-right">
+                <a type="submit" class="btn-sm btn-primary"><span class=" oi oi-clipboard" aria-hidden="true"></span>&nbsp;Submit</a>
+                <NavLink class="btn-sm btn-secondary btnCancel" href="Employee">
+                    <span class="oi oi-arrow-left" aria-hidden="true"></span>&nbsp;Cancel
+                </NavLink>&nbsp;
+            </div>
+        </div>
+        <div class="card-body col-sm-12">
+
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <fieldset>
+                <div>Personal Details</div>
+                <hr />
+                <div class="row col-12">
+                    <div class="col-6 float-left">
+                        <div class="form-row">
+                            <label class="col-md-4 col-form-label-sm">User Name</label>
+                            <div>
+                                <InputText class="form-control-sm" @bind-Value="user.UserName" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label class="col-md-4 col-form-label-sm">Email</label>
+                            <div>
+                                <InputText class="form-control-sm" @bind-Value="user.Email" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label class="col-md-4 col-form-label-sm"></label>
+                            <div>
+                                < class="form-control-sm" @bind-Value="user.Password" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label class="col-md-4 col-form-label-sm">Department</label>
+                            <div>
+                                <select class="form-control-sm" @bind="user.RoleId">
+                                    @foreach (var item in departmentModels)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</EditForm>
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private UserModel user = new UserModel();
+    private DepartmentModel[] departmentModels = new List<DepartmentModel>().ToArray();
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private async Task Save()
+    {
+        try
+        {
+            Console.WriteLine("IN Save Dept");
+            user.Id = id;
+            //var result = await _httpClient.PostJsonAsync<bool>("api/Employee", employeeModel).ConfigureAwait(false);
+            //if (result)
+            router.NavigateTo("/user");
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+    }
+}

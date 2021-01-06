@@ -1,4 +1,5 @@
-﻿@page "/employee"
+﻿@page "/"
+@page "/employee"
 @inject HttpClient httpClient;
 @using AtndTrackBlazorApp.Shared.Models
 @using AtndTrackBlazorApp.Shared
@@ -9,45 +10,71 @@
 }
 else
 {
-    <div class="card">
-        <div class="top-heading px-4">
-            <div class="text-heading col-6 float-left">
-                <h5>Employee</h5>
-            </div>
-            <div class="button-heading  col-6 float-right">
-                <NavLink class="nav-link" href="Employee/0">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span>Add Employees
-                </NavLink>
-            </div>
-        </div>
-        <div class="card-body col-sm-12">
 
-            <table class="col-sm-12">
-                <thead>
-                    <tr><th>Id</th><th>Name</th><th>Actions</th></tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in EmployeeModels)
-                    {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@item.FirstName</td>
-                            <td>
-                                <div class="form-inline">
-                                    <NavLink class="nav-link" href="@($"Employee/{item.Id}")">
-                                        <span class="oi oi-external-link" aria-hidden="true"></span>Edit
-                                    </NavLink>
-                                    <NavLink class="nav-link">
-                                        <span class="oi oi-delete" aria-hidden="true"></span>Delete
-                                    </NavLink>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+    <div class="card-deck">
+        @foreach (var employee in EmployeeModels)
+        {
+            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+                <div class="card-header">
+                    <h3>@employee.FirstName @employee.LastName</h3>
+                </div>
+                <div class="text-center">
+                    <img class="card-img-top imageThumbnail rounded-circle" src="/images/blankEmp.png" />
+                </div>
+                <div class="card-footer text-center">
+                    <NavLink class="nav-link" href="@($"Employee/{employee.Id}")">
+                        <span class="oi oi-external-link" aria-hidden="true"></span>Edit
+                    </NavLink>
+                    <NavLink class="nav-link">
+                        <span class="oi oi-delete" aria-hidden="true"></span>Delete
+                    </NavLink>
+                    <NavLink class="nav-link" href="@($"LeaveRequest?empId={employee.Id}&id=0")">
+                        <span class="oi oi-delete" aria-hidden="true"></span>Add LeaveRequest
+                    </NavLink>
+                </div>
+            </div>
+        }
     </div>
+
+    @*<div class="card">
+            <div class="top-heading px-4">
+                <div class="text-heading col-6 float-left">
+                    <h5>Employee</h5>
+                </div>
+                <div class="button-heading  col-6 float-right">
+                    <NavLink class="nav-link" href="Employee/0">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>Add Employees
+                    </NavLink>
+                </div>
+            </div>
+            <div class="card-body col-sm-12">
+
+                <table class="col-sm-12">
+                    <thead>
+                        <tr><th>Id</th><th>Name</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in EmployeeModels)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.FirstName</td>
+                                <td>
+                                    <div class="form-inline">
+                                        <NavLink class="nav-link" href="@($"Employee/{item.Id}")">
+                                            <span class="oi oi-external-link" aria-hidden="true"></span>Edit
+                                        </NavLink>
+                                        <NavLink class="nav-link">
+                                            <span class="oi oi-delete" aria-hidden="true"></span>Delete
+                                        </NavLink>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>*@
 }
 @code {
 
