@@ -12,7 +12,7 @@
                 <h5>Add Leave Requests</h5>
             </div>
             <div class="button-heading  col-6 float-right">
-                <button type="submit"  class="btn-sm btn-success"><span class=" oi oi-clipboard" aria-hidden="true"></span>&nbsp;Submit</button>
+                <button type="submit" class="btn-sm btn-success"><span class=" oi oi-clipboard" aria-hidden="true"></span>&nbsp;Submit</button>
                 <NavLink class="btn-sm btn-secondary btnCancel" href="LeaveRequests">
                     <span class="oi oi-arrow-left" aria-hidden="true"></span>&nbsp;Cancel
                 </NavLink>&nbsp;
@@ -30,6 +30,12 @@
             <fieldset>
                 <div class="row col-12">
                     <div class="col-6 float-left">
+                        <div class="form-row">
+                            <label class="col-md-4 col-form-label-sm">Employee Name</label>
+                            <div class="col-md-8">
+                                <InputText class="form-control-sm col-9" @bind-Value="empName" />
+                            </div>
+                        </div>
                         <div class="form-row">
                             <label class="col-md-4 col-form-label-sm">Reporting To</label>
                             <div class="col-md-8">
@@ -63,7 +69,7 @@
                                 <InputText class="form-control-sm col-9" @bind-Value="LeaveRequestModel.EamilAlertTo" />
                             </div>
                         </div>
-                        <div class="form-row">
+                        @*<div class="form-row">
                             <label class="col-md-4 col-form-label-sm">Leave Status</label>
                             <div class="col-md-8">
                                 <select class="form-control-sm col-9" @bind="LeaveRequestModel.Status">
@@ -74,7 +80,7 @@
                                     }
                                 </select>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="form-row">
                             <label class="col-md-4 col-form-label-sm">Date</label>
                             <div class="col-md-8">
@@ -100,7 +106,8 @@
     public int id { get; set; }
     [Parameter]
     public int empid { get; set; }
-    DateTimeOffset? DateFrom { get; set; } = DateTime.Today.AddMonths(-1);
+    public string empName { get; set; }
+    DateTimeOffset? DateFrom { get; set; } = DateTime.Today.AddDays(-1);
     DateTimeOffset? DateTo { get; set; } = DateTime.Today.AddDays(1).AddTicks(-1);
     private LeaveRequestModel LeaveRequestModel = new LeaveRequestModel();
     private EmployeeModel[] EmployeeModels = new List<EmployeeModel>().ToArray();
@@ -126,7 +133,7 @@
     {
 
         Console.WriteLine("IN Save Dept");
-        if (id>0)
+        if (id > 0)
         {
             LeaveRequestModel.Id = id;
             var result = await _httpClient.GetJsonAsync<LeaveRequestModel[]>("api/LeaveRequest").ConfigureAwait(false);
@@ -139,6 +146,8 @@
         }
         var response = await _httpClient.GetJsonAsync<EmployeeModel[]>("api/Employee").ConfigureAwait(false);
         EmployeeModels = response;
+        empName = string.Format("{0} {1} ",response.FirstOrDefault(o=>o.Id==empid)?.FirstName, response.FirstOrDefault(o=>o.Id==empid)?.FirstName);
+
     }
 
     private async Task SaveLeaveRequest()
@@ -149,7 +158,8 @@
 
             LeaveRequestModel.Id = id;
             LeaveRequestModel.EmployeeId = empid;
-            Console.WriteLine("IN Save Dept",System.Text.Json.JsonSerializer.Serialize(LeaveRequestModel));
+            if (LeaveRequestModel.Id == 0) LeaveRequestModel.Status = "Pending";
+            Console.WriteLine("IN Save Dept", System.Text.Json.JsonSerializer.Serialize(LeaveRequestModel));
             var result = await _httpClient.PostJsonAsync<bool>("api/LeaveRequest", LeaveRequestModel).ConfigureAwait(false);
             Console.WriteLine("respnose " + result);
 

@@ -1,5 +1,4 @@
-﻿@page "/"
-@page "/employee"
+﻿@page "/employee"
 @inject HttpClient httpClient;
 @using AtndTrackBlazorApp.Shared.Models
 @using AtndTrackBlazorApp.Shared
@@ -16,21 +15,23 @@ else
         {
             <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
                 <div class="card-header">
-                    <h3>@employee.FirstName @employee.LastName</h3>
+                    <h6>@employee.FirstName @employee.LastName</h6>
                 </div>
                 <div class="text-center">
-                    <img class="card-img-top imageThumbnail rounded-circle" src="/images/blankEmp.png" />
+                    <img class="card-img-top rounded-circle empimage" style="width:120px" src="/images/blankEmp.png" />
                 </div>
                 <div class="card-footer text-center">
-                    <NavLink class="nav-link" href="@($"Employee/{employee.Id}")">
-                        <span class="oi oi-external-link" aria-hidden="true"></span>Edit
-                    </NavLink>
-                    <NavLink class="nav-link">
-                        <span class="oi oi-delete" aria-hidden="true"></span>Delete
-                    </NavLink>
-                    <NavLink class="nav-link" href="@($"LeaveRequest?empId={employee.Id}&id=0")">
-                        <span class="oi oi-delete" aria-hidden="true"></span>Add LeaveRequest
-                    </NavLink>
+                    <div>
+                        <a class="btn-sm btn-primary col-sm-3" href="@($"Employee/{employee.Id}")">
+                            Edit
+                        </a>
+                        <a class="btn-sm btn-danger">
+                            Delete
+                        </a>
+                        <a class="btn-sm btn-primary  col-sm-6" href="@($"LeaveRequest?empId={employee.Id}&id=0")">
+                            LeaveRequest
+                        </a>
+                    </div>
                 </div>
             </div>
         }

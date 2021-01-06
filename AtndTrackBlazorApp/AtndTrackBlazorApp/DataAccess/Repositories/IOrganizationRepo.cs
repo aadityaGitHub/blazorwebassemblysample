@@ -7,6 +7,7 @@ namespace DataAccess.Repositories
     {
         Task<DepartmentModel[]> GetDepartments(string name);
         Task<DesignationModel[]> GetDesignations(string name);
+        Task<RoleModel[]> GetRoles(string name);
         Task<bool> Save(DepartmentModel departmentModel);
         Task<bool> SaveDesignation(DesignationModel departmentModel);
     }

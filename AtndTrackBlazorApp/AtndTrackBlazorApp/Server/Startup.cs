@@ -14,6 +14,8 @@ using AtndTrackBlazorApp.Server.Commands;
 using AtndTrackBlazorApp.Shared.Models;
 using AutoMapper;
 using DataAccess;
+using AtndTrackBlazorApp.Shared;
+using AtndTrackBlazorApp.Server.Services;
 
 namespace AtndTrackBlazorApp.Server
 {
@@ -39,6 +41,9 @@ namespace AtndTrackBlazorApp.Server
             services.AddScoped<IOrganizationRepo, OrganizationRepo>();
             services.AddScoped<IEmployeeRepo, EmployeeRepo>();
             services.AddScoped<ILeaveRequestRepo, LeaveRequestRepo>();
+            services.AddScoped<IUserRepo, UserRepo>();
+            services.Configure<SmtpServerSetting>(Configuration.GetSection("SmtpServerSettings"));
+            services.AddScoped<IEmailService, EmailService>();
             services.AddMediatR(typeof(DepartmentCommand).Assembly);
             services.AddAutoMapper(typeof(MappingConfig));
         }

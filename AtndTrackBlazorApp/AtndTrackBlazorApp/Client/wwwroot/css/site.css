@@ -210,3 +210,8 @@ app {
         display: block;
     }
 }
+
+.empimage{
+    width:150px;
+    height:150px;
+}

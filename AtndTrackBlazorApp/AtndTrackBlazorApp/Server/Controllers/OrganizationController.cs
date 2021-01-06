@@ -50,5 +50,14 @@ namespace AtndTrackBlazorApp.Server.Controllers
             var result = await _mediator.Send<CommandResult<bool>>(new DesignationSaveCommand() { Model = DesignationModel }).ConfigureAwait(false);
             return result.ResponseObj;
         }
+
+
+        // GET: api/Organization
+        [HttpGet("roles")]
+        public async Task<IEnumerable<RoleModel>> GetRoles()
+        {
+            var lst = await _mediator.Send<CommandResult<RoleModel[]>>(new RoleCommand() { SearchName = string.Empty }).ConfigureAwait(false);
+            return lst.ResponseObj; //?.ResponseObj as IEnumerable<DesignationModel>;
+        }
     }
 }

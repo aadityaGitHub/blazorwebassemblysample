@@ -12,13 +12,13 @@
             <h5>Users</h5>
         </div>
         <div class="button-heading  col-6 float-right">
-            <NavLink class="btn-sm btn-primary" href="Employee/0">
+            <NavLink class="btn-sm btn-primary" href="user/0">
                 <span class="oi oi-list-rich" aria-hidden="true"></span>Add User
             </NavLink>
         </div>
     </div>
     <div class="card-body col-sm-12">
-        @if (UsersLst == null)
+        @if (usersLst == null)
         {
             <p><em>Loading...</em></p>
         }
@@ -29,14 +29,14 @@
                     <tr><th>Id</th><th>Name</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in UsersLst)
+                    @foreach (var item in usersLst)
                     {
                         <tr>
                             <td>@item.Id</td>
                             <td>@item.Email</td>
                             <td>
                                 <div class="form-inline">
-                                    <NavLink class="nav-link" href="@($"Employee/{item.Id}")">
+                                    <NavLink class="nav-link" href="@($"user/{item.Id}")">
                                         <span class="oi oi-external-link" aria-hidden="true"></span>Edit
                                     </NavLink>
                                     <NavLink class="nav-link">
@@ -54,9 +54,9 @@
 
 
 @code {
-    private UserModel[] UsersLst;
+    private UserModel[] usersLst;
     protected override async Task OnInitializedAsync()
     {
-
+        usersLst = await httpClient.GetJsonAsync<UserModel[]>("api/user").ConfigureAwait(false);
     }
 }

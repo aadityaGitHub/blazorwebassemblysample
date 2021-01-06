@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AtndTrackBlazorApp.Server.Commands;
 using AtndTrackBlazorApp.Server.Commands.LeaveRequest;
+using AtndTrackBlazorApp.Server.Services;
 using AtndTrackBlazorApp.Shared;
 using AtndTrackBlazorApp.Shared.Models;
 using MediatR;
@@ -14,13 +15,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace AtndTrackBlazorApp.Server.Controllers
 {
     [Route("api/[controller]")]
-    public class LeaveRequestController : Controller
+    [ApiController]
+
+    public class LeaveRequestController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IEmailService _emailService;
 
-        public LeaveRequestController(IMediator mediator)
+        public LeaveRequestController(IMediator mediator, IEmailService emailService)
         {
             this._mediator = mediator;
+            this._emailService = emailService;
         }
         // GET: api/<controller>
         [HttpGet]
@@ -44,8 +49,12 @@ namespace AtndTrackBlazorApp.Server.Controllers
         [HttpPost]
         public async Task<bool> Post([FromBody]LeaveRequestModel value)
         {
-            var lst = await _mediator.Send<CommandResult<bool>>(new LeaveRequestSaveCommand() { Model = value }).ConfigureAwait(false);
-            return lst.ResponseObj; //?.ResponseObj as IEnumerable<DesignationModel>;
+            var result = await _mediator.Send<CommandResult<bool>>(new LeaveRequestSaveCommand() { Model = value }).ConfigureAwait(false);
+            if(result?.ResponseObj??false)
+            {
+                _emailService.Send("adityaakunuri003@gmail.com", "infotoadi@gmail.com", "Leave Request created", "Leave REquest created.");
+            }
+            return result.ResponseObj; //?.ResponseObj as IEnumerable<DesignationModel>;
 
         }
 

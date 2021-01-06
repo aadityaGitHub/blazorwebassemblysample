@@ -63,5 +63,12 @@ namespace DataAccess.Repositories
             return true;
         }
 
+
+        public async Task<RoleModel[]> GetRoles(string name)
+        {
+            var lst = await _attendancetrackContext.Roles.Where(o => o.Name.Contains(name)).Select(o => _mapper.Map<RoleModel>(o)).ToArrayAsync().ConfigureAwait(false);
+            return lst;
+        }
+
     }
 }
