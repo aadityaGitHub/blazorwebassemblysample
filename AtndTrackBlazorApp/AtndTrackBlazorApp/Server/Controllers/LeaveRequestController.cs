@@ -52,7 +52,7 @@ namespace AtndTrackBlazorApp.Server.Controllers
             var result = await _mediator.Send<CommandResult<bool>>(new LeaveRequestSaveCommand() { Model = value }).ConfigureAwait(false);
             if(result?.ResponseObj??false)
             {
-                _emailService.Send("adityaakunuri003@gmail.com", "infotoadi@gmail.com", "Leave Request created", "Leave REquest created.");
+                _emailService.Send(value.EamilAlertTo, "Leave Request created", "Leave REquest created.");
             }
             return result.ResponseObj; //?.ResponseObj as IEnumerable<DesignationModel>;
 

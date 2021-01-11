@@ -48,7 +48,8 @@ namespace DataAccess.Repositories
                 }
                 else
                 {
-                    await _attendancetrackContext.User.AddAsync(_mapper.Map<User>(user)).ConfigureAwait(false);
+                    var us = _mapper.Map<User>(user);
+                    await _attendancetrackContext.User.AddAsync(us).ConfigureAwait(false);
 
                 }
                 await _attendancetrackContext.SaveChangesAsync().ConfigureAwait(false);

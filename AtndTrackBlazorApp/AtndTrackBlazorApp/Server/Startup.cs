@@ -16,6 +16,9 @@ using AutoMapper;
 using DataAccess;
 using AtndTrackBlazorApp.Shared;
 using AtndTrackBlazorApp.Server.Services;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace AtndTrackBlazorApp.Server
 {
@@ -66,7 +69,11 @@ namespace AtndTrackBlazorApp.Server
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
-
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Templates")),
+                RequestPath = new PathString("/Templates")
+            });
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

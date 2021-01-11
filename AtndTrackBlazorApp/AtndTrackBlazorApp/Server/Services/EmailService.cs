@@ -19,16 +19,16 @@ namespace AtndTrackBlazorApp.Server.Services
         public EmailService(IOptionsSnapshot<SmtpServerSetting> appSettings)
         {
             _appSettings = appSettings.Value;
-            smtp.Connect(_appSettings.Server, _appSettings.Port, SecureSocketOptions.StartTls);
             smtp.Authenticate(_appSettings.UserName, _appSettings.Password);
 
         }
 
-        public void Send(string from, string to, string subject, string html)
+        public void Send(string to, string subject, string html)
         {
             // create message
+
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(from));
+            email.From.Add(MailboxAddress.Parse(_appSettings.SenderEmail));
             email.To.Add(MailboxAddress.Parse(to));
             email.Subject = subject;
             email.Body = new TextPart(TextFormat.Html) { Text = html };
@@ -36,6 +36,7 @@ namespace AtndTrackBlazorApp.Server.Services
             // send email
             //using var smtp = new SmtpClient();
             //smtp.Authenticate(_appSettings.UserName, _appSettings.Password);
+            smtp.Connect(_appSettings.Server, _appSettings.Port, SecureSocketOptions.StartTls);
             smtp.Send(email);
             smtp.Disconnect(true);
         }

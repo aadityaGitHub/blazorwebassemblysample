@@ -25,7 +25,6 @@
             <div class="card-body col-sm-12">
 
                 <DataAnnotationsValidator />
-                <ValidationSummary />
                 <fieldset>
                     <div>Personal Details</div>
                     <hr />
@@ -35,6 +34,7 @@
                                 <label class="col-md-4 col-form-label-sm">User Name</label>
                                 <div>
                                     <InputText class="form-control-sm" @bind-Value="user.UserName" />
+                                    <ValidationMessage class="alert-danger" For="@(() => user.UserName)" />
                                 </div>
                             </div>
                             <div class="form-row">
@@ -47,12 +47,21 @@
                                 <label class="col-md-4 col-form-label-sm">Email</label>
                                 <div>
                                     <InputText class="form-control-sm" @bind-Value="user.Email" />
+                                    <ValidationMessage class="alert-danger" For="@(() => user.Email)" />
                                 </div>
                             </div>
                             <div class="form-row">
                                 <label class="col-md-4 col-form-label-sm">Password</label>
                                 <div>
                                     <InputText type="password" class="form-control-sm" @bind-Value="user.Password" />
+                                    <ValidationMessage class="alert-danger" For="@(() => user.Password)" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <label class="col-md-4 col-form-label-sm">Password</label>
+                                <div>
+                                    <InputText type="password" class="form-control-sm" @bind-Value="user.ConfirmPassword" />
+                                    <ValidationMessage class="alert-danger" For="@(() => user.ConfirmPassword)" />
                                 </div>
                             </div>
                             <div class="form-row">
@@ -64,9 +73,10 @@
                                             <option value="@item.RoleId">@item.Name</option>
                                         }
                                     </select>
+                                    <ValidationMessage class="alert-danger" For="@(() => user.RoleId)" />
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
 
                     </div>
@@ -76,16 +86,16 @@
     </fieldset>
 </EditForm>
 @code {
-        [Parameter]
-        public int id { get; set; }
+    [Parameter]
+    public int id { get; set; }
     private UserModel user = new UserModel();
-    private RoleModel[] roles= new List<RoleModel>().ToArray();
+    private RoleModel[] roles = new List<RoleModel>().ToArray();
 
     protected override async Task OnInitializedAsync()
     {
         user.Id = id;
         var usersLst = await _httpClient.GetJsonAsync<UserModel[]>("api/user").ConfigureAwait(false);
-        user = usersLst?.FirstOrDefault(o=>o.Id == id)?? new UserModel() { Id = id};
+        user = usersLst?.FirstOrDefault(o => o.Id == id) ?? new UserModel() { Id = id };
         var result = await _httpClient.GetJsonAsync<RoleModel[]>("api/Organization/Roles").ConfigureAwait(false);
         if (result != null) { roles = result; }
     }

@@ -20,7 +20,7 @@ namespace DataAccess
             CreateMap<Roles, RoleModel>();
             CreateMap<DepartmentModel, Department>();
             CreateMap<Designation, DesignationModel>();
-            CreateMap<User, UserModel>();
+            CreateMap<User, UserModel>().ForAllOtherMembers(s=>s.Ignore());
             CreateMap<JobDetailModel, JobDetail>()
                 .ForMember(dest => dest.CreatedDate, src => src.MapFrom(s => DateTime.Now))
                 ;
@@ -45,7 +45,8 @@ namespace DataAccess
                 .ForMember(dest => dest.JobDetail, src => src.MapFrom(s => s.JobDetail));
             CreateMap<UserModel, User>()
                  .ForMember(dest => dest.CreatedDate, src => src.MapFrom(s => DateTime.Now))
-                 .ForMember(dest => dest.IsActive, src => src.MapFrom(s => true));
+                 .ForMember(dest => dest.IsActive, src => src.MapFrom(s => true))
+                 ;
         }
     }
 }
