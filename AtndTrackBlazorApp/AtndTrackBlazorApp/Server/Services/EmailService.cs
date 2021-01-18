@@ -19,7 +19,6 @@ namespace AtndTrackBlazorApp.Server.Services
         public EmailService(IOptionsSnapshot<SmtpServerSetting> appSettings)
         {
             _appSettings = appSettings.Value;
-            smtp.Authenticate(_appSettings.UserName, _appSettings.Password);
 
         }
 
@@ -34,9 +33,8 @@ namespace AtndTrackBlazorApp.Server.Services
             email.Body = new TextPart(TextFormat.Html) { Text = html };
 
             // send email
-            //using var smtp = new SmtpClient();
-            //smtp.Authenticate(_appSettings.UserName, _appSettings.Password);
             smtp.Connect(_appSettings.Server, _appSettings.Port, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_appSettings.UserName, _appSettings.Password);
             smtp.Send(email);
             smtp.Disconnect(true);
         }

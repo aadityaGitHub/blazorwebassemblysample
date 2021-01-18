@@ -21,6 +21,19 @@ namespace DataAccess.Repositories
             _attendancetrackContext = attendancetrackContext;
             this._mapper = mapper;
         }
+
+        public async Task<bool> ActivateUser(int userId)
+        {
+            var user = await _attendancetrackContext.User.FirstOrDefaultAsync(o => o.Id == userId).ConfigureAwait(false);
+            if (user != null)
+            {
+                user.IsActive = true;
+                user.ModifiedDate = DateTime.Now;
+                return true;
+            }
+            return false;
+        }
+
         public async Task<UserModel[]> GetUsers(string name)
         {
             try
@@ -36,7 +49,7 @@ namespace DataAccess.Repositories
             }
         }
 
-        public async Task<bool> Save(UserModel user)
+        public async Task<int> Save(UserModel user)
         {
             try
             {
@@ -45,15 +58,16 @@ namespace DataAccess.Repositories
                 {
                     dbDeptModel = _mapper.Map<UserModel, User>(user, dbDeptModel);
                     dbDeptModel.ModifiedDate = DateTime.Now;
+                    await _attendancetrackContext.SaveChangesAsync().ConfigureAwait(false);
                 }
                 else
                 {
                     var us = _mapper.Map<User>(user);
                     await _attendancetrackContext.User.AddAsync(us).ConfigureAwait(false);
-
+                    await _attendancetrackContext.SaveChangesAsync().ConfigureAwait(false);
+                    return us.Id;
                 }
-                await _attendancetrackContext.SaveChangesAsync().ConfigureAwait(false);
-                return true;
+                return user.Id;
             }
             catch (Exception)
             {

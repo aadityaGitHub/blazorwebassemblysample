@@ -1,6 +1,7 @@
 ﻿using AtndTrackBlazorApp.Server.Commands.User;
 using AtndTrackBlazorApp.Server.Services;
 using AtndTrackBlazorApp.Shared;
+using AtndTrackBlazorApp.Shared.Helpers;
 using AtndTrackBlazorApp.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -46,28 +47,29 @@ namespace AtndTrackBlazorApp.Server.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task<bool> Post([FromBody] UserModel value)
+        public async Task<CommandResult<int>> Post([FromBody] UserModel value)
         {
-            var response = await _mediator.Send<CommandResult<bool>>(new UserSaveCommand() { Model = value }).ConfigureAwait(false);
-            if (response?.ResponseObj ?? false)
+            var response = await _mediator.Send<CommandResult<int>>(new UserSaveCommand() { Model = value }).ConfigureAwait(false);
+            if (response?.ResponseObj>0)
             {
-                SendMail(value.Email, "User Activation Email");
-            }
-            return response.ResponseObj;
-
-        }
-
-        private void SendMail(string userEmail, string subject)
-        {
-            try
-            {
-
                 StringBuilder stringBuilder = new StringBuilder();
-                using (StreamReader reader = new StreamReader(Path.Combine("Templates", "AddUser.html")))
+                using (StreamReader reader = new StreamReader(Path.Combine("Templates", Constants.AddUserTemplate)))
                 {
                     stringBuilder.Append(reader.ReadToEnd());
                 }
-                _emailService.Send(userEmail, subject, stringBuilder.ToString());
+                var mailContent = stringBuilder.ToString();
+                mailContent = mailContent.Replace("{0}", $"{value.ClientUrl}useractivation/{response.ResponseObj}?messageGuid={Guid.NewGuid()}");
+                SendMail(value.Email, "User Activation Email", mailContent);
+            }
+            return response;
+
+        }
+
+        private void SendMail(string userEmail, string subject, string mailContent)
+        {
+            try
+            {
+                _emailService.Send(userEmail, subject, mailContent);
             }
             catch (Exception ex)
             {
@@ -86,6 +88,13 @@ namespace AtndTrackBlazorApp.Server.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        // DELETE api/<UserController>/5
+        [HttpGet("useractivation/{id}")]
+        public async Task<CommandResult<bool>> ActivateUser(int id)
+        {
+            return await _mediator.Send<CommandResult<bool>>(new ActivateUserCommand() { UserId = id }).ConfigureAwait(false);
         }
     }
 }

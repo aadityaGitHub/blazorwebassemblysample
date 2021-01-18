@@ -1,0 +1,88 @@
+﻿@using AtndTrackBlazorApp.Shared.Models;
+@using AtndTrackBlazorApp.Shared;
+@using System.Linq;
+@using BlazorDateRangePicker;
+
+@inject HttpClient _httpClient;
+@inject NavigationManager router;
+
+<div style="width:800px">
+    <EditForm Model="@LeaveRequestModel" OnValidSubmit="SaveLeaveRequest">
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <fieldset>
+            @*<legend>Employee-@employeeName Leave Request</legend>
+            <hr />*@
+            <div class="row col-12">
+                <div class="col-6 float-left">
+                    <div class="form-row">
+                        <label class="col-md-4 col-form-label-sm">Employee Name</label>
+                        <div class="col-md-8">
+                            <label class="form-control-sm col-9">@LeaveRequestModel.EmployeeName </label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label class="col-md-4 col-form-label-sm">Reason</label>
+                        <div class="col-md-8">
+                            <InputText class="form-control-sm col-9" @bind-Value="LeaveRequestModel.Response" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+    </EditForm>
+    <div>
+        <div class="row col-12">
+            <div class="text-right col-8">
+                <button type="submit" class="btn btn-outline-primary">@(((LeaveStatusTypes) leavestatus).ToString())</button>
+                <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code { [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    async Task Close() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    async Task Cancel() => await BlazoredModal.CancelAsync();
+
+    [Parameter]
+    public int id { get; set; }
+    [Parameter]
+    public int leavestatus { get; set; }
+    [Parameter]
+    public string employeeName { get; set; }
+    private LeaveRequestModel LeaveRequestModel = new LeaveRequestModel();
+
+    private EmployeeModel[] EmployeeModels = new List<EmployeeModel>().ToArray();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("IN Save Dept");
+        if (id != default(int))
+        {
+            LeaveRequestModel.Id = id;
+            var result = await _httpClient.GetJsonAsync<LeaveRequestModel[]>("api/LeaveRequest").ConfigureAwait(false);
+            if (result != null) { LeaveRequestModel = result.FirstOrDefault(o => o.Id == id); }
+        }
+        else
+        {
+            LeaveRequestModel.DateFrom = DateTime.Today.AddMonths(-1);
+            LeaveRequestModel.DateTo = DateTime.Today.AddDays(1).AddTicks(-1);
+        }
+        var response = await _httpClient.GetJsonAsync<EmployeeModel[]>("api/Employee").ConfigureAwait(false);
+        Console.WriteLine("respnose " + System.Text.Json.JsonSerializer.Serialize(response));
+        EmployeeModels = response;
+    }
+
+    private async Task SaveLeaveRequest()
+    {
+        Console.WriteLine("IN Save Dept");
+        LeaveRequestModel.Id = id;
+        LeaveRequestModel.Status = (((LeaveStatusTypes)leavestatus).ToString());
+        var result = await _httpClient.PostJsonAsync<bool>("api/LeaveRequest", LeaveRequestModel).ConfigureAwait(false);
+        if (result) router.NavigateTo("/LeaveRequest");
+    } }

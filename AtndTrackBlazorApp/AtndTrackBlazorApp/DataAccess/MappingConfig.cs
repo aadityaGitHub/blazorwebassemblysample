@@ -45,7 +45,6 @@ namespace DataAccess
                 .ForMember(dest => dest.JobDetail, src => src.MapFrom(s => s.JobDetail));
             CreateMap<UserModel, User>()
                  .ForMember(dest => dest.CreatedDate, src => src.MapFrom(s => DateTime.Now))
-                 .ForMember(dest => dest.IsActive, src => src.MapFrom(s => true))
                  ;
         }
     }

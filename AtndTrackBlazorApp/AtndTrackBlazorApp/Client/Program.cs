@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Blazored.Modal;
 
 namespace AtndTrackBlazorApp.Client
 {
@@ -15,7 +16,7 @@ namespace AtndTrackBlazorApp.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
-
+            builder.Services.AddBlazoredModal();
             await builder.Build().RunAsync();
         }
     }

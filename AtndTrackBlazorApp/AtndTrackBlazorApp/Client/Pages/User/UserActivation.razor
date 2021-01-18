@@ -1,0 +1,22 @@
+﻿<h3>UserActivation</h3>
+@page "/useractivation/{id:int}"
+@using AtndTrackBlazorApp.Shared.Models;
+@using AtndTrackBlazorApp.Shared;
+
+@inject HttpClient _httpClient;
+@inject NavigationManager router;
+
+<h3>@ResponseMessage</h3>
+@code {
+    [Parameter]
+    public int id { get; set; }
+    [Parameter]
+    public string messageGuid { get; set; }
+    public string ResponseMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _httpClient.GetJsonAsync<CommandResult<bool>>($"api/user/useractivation/{id}").ConfigureAwait(false);
+        ResponseMessage = result.Message;
+    }
+}

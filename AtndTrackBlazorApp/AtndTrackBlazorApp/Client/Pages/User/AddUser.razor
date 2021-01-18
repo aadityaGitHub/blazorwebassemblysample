@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page "/user/{id:int}"
 @using AtndTrackBlazorApp.Shared.Models;
+@using AtndTrackBlazorApp.Shared;
 
 @inject HttpClient _httpClient;
 @inject NavigationManager router;
@@ -104,10 +105,13 @@
     {
         try
         {
-            Console.WriteLine("IN Save Dept");
+            Console.WriteLine("IN Save User");
             user.Id = id;
-            var result = await _httpClient.PostJsonAsync<bool>("api/User", user).ConfigureAwait(false);
-            if (result)
+            user.ClientUrl = router.ToAbsoluteUri(router.Uri).ToString();
+            Console.WriteLine(router.ToAbsoluteUri(router.Uri));
+
+            var result = await _httpClient.PostJsonAsync<CommandResult<bool>>("api/User", user).ConfigureAwait(false);
+            if (result.Status)
                 router.NavigateTo("/user");
         }
         catch (Exception ex)

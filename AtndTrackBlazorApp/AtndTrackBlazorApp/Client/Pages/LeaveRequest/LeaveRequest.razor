@@ -2,6 +2,8 @@
 @inject HttpClient httpClient;
 @using AtndTrackBlazorApp.Shared.Models
 @using AtndTrackBlazorApp.Shared
+@using Blazored.Modal
+@using Blazored.Modal.Services
 @inject NavigationManager router;
 
 @if (LeaveRequestModels == null)
@@ -54,13 +56,14 @@ else
                                     <a class="nav-link">
                                         Delete
                                     </a>
-                                    @if (item.LeaveTypeId == (int)LeaveStatusTypes.Pending)
+                                    @if (item.Status == LeaveStatusTypes.Pending.ToString())
                                     {
                                         <a class="nav-link" href="@($"leaverequestresponse/{item.Id}/{(int)LeaveStatusTypes.Approved}")">
                                             Approve
                                         </a>
+                                        <button @onclick="@(() => ShowEditMovie(item.Id,(int)LeaveStatusTypes.Approved,item.EmployeeName))" class="btn btn-primary">Approve</button>
                                     }
-                                    @if ((item.LeaveTypeId == (int)LeaveStatusTypes.Pending || item.LeaveTypeId == (int)LeaveStatusTypes.Approved) && item.LeaveTypeId != (int)LeaveStatusTypes.Approved)
+                                    @if ((item.Status == LeaveStatusTypes.Pending.ToString() || item.Status == LeaveStatusTypes.Approved.ToString()) && item.Status != LeaveStatusTypes.Approved.ToString())
                                     {<a class="nav-link" href="@($"leaverequestresponse/{item.Id}/{(int)LeaveStatusTypes.Declined}")">
                                             Decline
                                         </a>
@@ -80,6 +83,7 @@ else
     [Parameter]
     public int empid { get; set; }
     private LeaveRequestModel[] LeaveRequestModels = new List<LeaveRequestModel>().ToArray();
+    [CascadingParameter] public IModalService Modal { get; set; }
     protected override async Task OnInitializedAsync()
     {
         //if (empid <= 0)
@@ -89,5 +93,14 @@ else
         LeaveRequestModels = await httpClient.GetJsonAsync<LeaveRequestModel[]>("api/LeaveRequest").ConfigureAwait(false);
         Console.WriteLine("respnose " + LeaveRequestModels);
         //LeaveRequestModels = response;
+    }
+    void ShowEditMovie(int id, int leaveStatus,string employeeName)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(LeaveStatusUpdate.id), id);
+        parameters.Add(nameof(LeaveStatusUpdate.leavestatus), leaveStatus);
+        parameters.Add(nameof(LeaveStatusUpdate.employeeName), employeeName);
+
+        Modal.Show<LeaveStatusUpdate>($"{employeeName}-Leave Request", parameters);
     }
 }

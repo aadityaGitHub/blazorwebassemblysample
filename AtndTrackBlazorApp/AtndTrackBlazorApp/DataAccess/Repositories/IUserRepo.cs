@@ -1,4 +1,5 @@
-﻿using AtndTrackBlazorApp.Shared.Models;
+﻿using AtndTrackBlazorApp.Shared;
+using AtndTrackBlazorApp.Shared.Models;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
@@ -6,6 +7,7 @@ namespace DataAccess.Repositories
     public interface IUserRepo
     {
         Task<UserModel[]> GetUsers(string name);
-        Task<bool> Save(UserModel user);
+        Task<int> Save(UserModel user);
+        Task<bool> ActivateUser(int userId);
     }
 }
