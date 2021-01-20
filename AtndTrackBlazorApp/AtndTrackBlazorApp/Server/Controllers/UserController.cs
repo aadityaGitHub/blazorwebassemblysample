@@ -96,5 +96,13 @@ namespace AtndTrackBlazorApp.Server.Controllers
         {
             return await _mediator.Send<CommandResult<bool>>(new ActivateUserCommand() { UserId = id }).ConfigureAwait(false);
         }
+
+        [HttpPost("authenticate")]
+        public async Task<bool> Authenticate(int id)
+        {
+            //var res= new CommandResult<bool>() { Message = true ? "User Activated Successfully." : "Error occurred. Please try again", ResponseObj = true, Status = true };
+
+            return true;
+        }
     }
 }

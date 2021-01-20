@@ -1,15 +1,47 @@
 ﻿@inherits LayoutComponentBase
+@inject IAccountService AccountService
+@inject NavigationManager NavigationManager
 <link rel="stylesheet" href="_content/BlazorDateRangePicker/daterangepicker.min.css" />
-<div class="sidebar">
-    <NavMenu />
-</div>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+
+@if (LoggedIn)
+{
+
+
+    <div class="sidebar">
+        <NavMenu />
     </div>
 
-    <div class="content px-4">
-        @Body
+
+    <div class="main">
+        <div class="top-row px-4">
+            @*<a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>*@
+            <NavLink href="" Match="NavLinkMatch.All" class="nav-item nav-link">Home</NavLink>
+            <NavLink href="users" class="nav-item nav-link">Users</NavLink>
+            <NavLink href="account/logout" class="nav-item nav-link">Logout</NavLink>
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
     </div>
-</div>
+}
+else
+{
+
+
+    <div class="main">
+        <div class="content px-4">
+            <Alert />
+            @Body
+        </div>
+    </div>
+
+}
+
+@code {
+    public bool LoggedIn
+    {
+        get { return AccountService.User != null; }
+    }
+}

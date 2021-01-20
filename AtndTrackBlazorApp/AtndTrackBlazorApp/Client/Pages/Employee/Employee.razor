@@ -1,7 +1,9 @@
 ﻿@page "/employee"
 @inject HttpClient httpClient;
+@inject IEmployeeService _empService;
 @using AtndTrackBlazorApp.Shared.Models
 @using AtndTrackBlazorApp.Shared
+
 
 @if (EmployeeModels == null)
 {
@@ -15,21 +17,22 @@ else
         {
             <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
                 <div class="card-header">
-                    <h6>@employee.FirstName @employee.LastName</h6>
+                    <img class="card-img-top rounded-circle empimage" style="width:50px;height:50px;" src="/images/blankEmp.png" />
+                    <h6 class="float-sm-right">@employee.FirstName @employee.LastName</h6>
                 </div>
-                <div class="text-center">
+                @*<div class="text-center">
                     <img class="card-img-top rounded-circle empimage" style="width:120px" src="/images/blankEmp.png" />
-                </div>
+                </div>*@
                 <div class="card-footer text-center">
                     <div>
                         <a class="btn-sm btn-primary col-sm-3" href="@($"Employee/{employee.Id}")">
                             Edit
                         </a>
-                        <a class="btn-sm btn-danger">
+                        <a class="btn-sm btn-danger" style="color:white">
                             Delete
                         </a>
                         <a class="btn-sm btn-primary  col-sm-6" href="@($"LeaveRequest?empId={employee.Id}&id=0")">
-                            LeaveRequest
+                            Apply Leave
                         </a>
                     </div>
                 </div>
@@ -82,8 +85,10 @@ else
     private EmployeeModel[] EmployeeModels;
     protected override async Task OnInitializedAsync()
     {
-        var response = await httpClient.GetJsonAsync<EmployeeModel[]>("api/Employee").ConfigureAwait(false);
-        Console.WriteLine("respnose ", response);
-        EmployeeModels = response;
+        //var response = await httpClient.GetJsonAsync<EmployeeModel[]>("api/Employee").ConfigureAwait(false);
+        //Console.WriteLine("respnose ", response);
+        //EmployeeModels = response;
+        await _empService.Initialize().ConfigureAwait(false);
+        EmployeeModels = _empService.EmployeeModels;
     }
 }
