@@ -2,13 +2,13 @@
    "ContextClassName": "AttendancetrackContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
-   "DoNotCombineNamespace": false,
-   "IdReplace": false,
+   "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": "Context",
    "OutputPath": "Models",
    "ProjectRootNamespace": "DataAccess",
+   "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "Tables": [
@@ -43,6 +43,10 @@
       {
          "HasPrimaryKey": true,
          "Name": "[Atnd].[User]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[Atnd].[UserNotification]"
       }
    ],
    "UseDatabaseNames": false,
@@ -51,5 +55,7 @@
    "UseHandleBars": false,
    "UseInflector": false,
    "UseLegacyPluralizer": false,
-   "UseSpatial": false
+   "UseNodaTime": false,
+   "UseSpatial": false,
+   "UseStoredProcedures": false
 }

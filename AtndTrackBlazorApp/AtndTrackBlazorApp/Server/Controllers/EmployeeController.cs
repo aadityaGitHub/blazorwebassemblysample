@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AtndTrackBlazorApp.Server.Commands;
 using AtndTrackBlazorApp.Server.Commands.Employee;
+using AtndTrackBlazorApp.Server.Commands.LeaveRequest;
 using AtndTrackBlazorApp.Shared;
 using AtndTrackBlazorApp.Shared.Models;
 using MediatR;
@@ -59,6 +60,13 @@ namespace AtndTrackBlazorApp.Server.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpPost("notifications")]
+        public async Task<IEnumerable<UserNotificationModel>> Notifications(int id)
+        {
+            var lst = await _mediator.Send<CommandResult<UserNotificationModel[]>>(new UserNotificationCommand() { EmployeeId = id }).ConfigureAwait(false);
+            return lst.ResponseObj;
         }
     }
 }

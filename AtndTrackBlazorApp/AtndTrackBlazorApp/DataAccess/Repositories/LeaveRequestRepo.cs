@@ -41,24 +41,35 @@ namespace DataAccess.Repositories
             return lst;
         }
 
-        public async Task<bool> Save(LeaveRequestModel leaveRequestModel)
+        public async Task<int> Save(LeaveRequestModel leaveRequestModel)
         {
             var dbDeptModel = await _attendancetrackContext.LeaveRequests.FirstOrDefaultAsync(o => o.Id == leaveRequestModel.Id).ConfigureAwait(false);
             if (dbDeptModel != null)
             {
                 dbDeptModel = _mapper.Map<LeaveRequestModel, LeaveRequests>(leaveRequestModel, dbDeptModel); // dbDeptModel.FirstName = LeaveRequestModel.FirstName;
                 dbDeptModel.ModifiedDate = DateTime.Now;
+                await _attendancetrackContext.SaveChangesAsync().ConfigureAwait(false);
+                return dbDeptModel.Id;
             }
             else
             {
-                var countId = await _attendancetrackContext.LeaveRequests.CountAsync().ConfigureAwait(false);
-                await _attendancetrackContext.LeaveRequests.AddAsync(_mapper.Map<LeaveRequests>(leaveRequestModel)).ConfigureAwait(false);
-
+                var mapobj = _mapper.Map<LeaveRequests>(leaveRequestModel);
+                await _attendancetrackContext.LeaveRequests.AddAsync(mapobj).ConfigureAwait(false);
+                await _attendancetrackContext.SaveChangesAsync().ConfigureAwait(false);
+                return mapobj.Id;
             }
+        }
+
+        public async Task<bool> SaveUserNotification(List<UserNotificationModel> userNotificationModels)
+        {
+            await _attendancetrackContext.AddRangeAsync(userNotificationModels.Select(s => _mapper.Map<UserNotification>(s))).ConfigureAwait(false);
             await _attendancetrackContext.SaveChangesAsync().ConfigureAwait(false);
             return true;
         }
 
-
+        public async Task<UserNotificationModel[]> GetUserNotification(int employeeId)
+        {
+            return await _attendancetrackContext.UserNotification.Where(o=>o.EmployeeId== employeeId).Select(o=>_mapper.Map<UserNotification,UserNotificationModel>(o)).ToArrayAsync().ConfigureAwait(false);
+        }
     }
 }

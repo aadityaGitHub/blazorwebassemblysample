@@ -1,0 +1,41 @@
+﻿
+@using AtndTrackBlazorApp.Shared.Models;
+@using AtndTrackBlazorApp.Shared;
+
+@inject HttpClient _httpClient;
+@inject NavigationManager router;
+
+<!-- Example single danger button -->
+
+<ul>
+    @if (NotificationModels != null)
+    {
+        @foreach (var item in NotificationModels)
+        {
+        <li class="dropdown-item">@item.Message</li>
+        }
+    }
+</ul>
+@code {
+    private UserNotificationModel[] NotificationModels;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+
+            var notifications = await _httpClient.PostJsonAsync<UserNotificationModel[]>("api/Employee/notifications?id=3", null).ConfigureAwait(false);
+            Console.WriteLine("rest", notifications);
+            NotificationModels = notifications;
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("rest exce ", ex.Message);
+
+            throw;
+        }
+    }
+
+}

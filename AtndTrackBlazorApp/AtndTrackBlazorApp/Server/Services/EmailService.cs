@@ -28,7 +28,13 @@ namespace AtndTrackBlazorApp.Server.Services
 
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(_appSettings.SenderEmail));
-            email.To.Add(MailboxAddress.Parse(to));
+            var validToAddress = to.Split(";").Select(o =>
+            {
+                if (MailboxAddress.TryParse(o, out var address))
+                    return address;
+                return null;
+            });
+            email.To.AddRange(validToAddress.Where(o=>o!=null));
             email.Subject = subject;
             email.Body = new TextPart(TextFormat.Html) { Text = html };
 

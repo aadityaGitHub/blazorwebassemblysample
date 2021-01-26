@@ -46,6 +46,11 @@ namespace DataAccess
             CreateMap<UserModel, User>()
                  .ForMember(dest => dest.CreatedDate, src => src.MapFrom(s => DateTime.Now))
                  ;
+            CreateMap<UserNotificationModel, UserNotification>()
+                 .ForMember(dest => dest.CreatedDate, src => src.MapFrom(s => DateTime.Now))
+                 ;
+            CreateMap<UserNotification, UserNotificationModel>()
+                 ;
         }
     }
 }

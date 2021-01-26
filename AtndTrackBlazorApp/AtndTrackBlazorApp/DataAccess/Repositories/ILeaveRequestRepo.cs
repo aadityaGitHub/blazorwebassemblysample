@@ -1,4 +1,5 @@
 ﻿using AtndTrackBlazorApp.Shared.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
@@ -7,6 +8,8 @@ namespace DataAccess.Repositories
     {
         Task<LeaveRequestModel> GetLeaveRequest(int LeaveRequestId);
         Task<LeaveRequestModel[]> GetLeaveRequests(string name);
-        Task<bool> Save(LeaveRequestModel leaveRequestModel);
+        Task<int> Save(LeaveRequestModel leaveRequestModel);
+        Task<bool> SaveUserNotification(List<UserNotificationModel> userNotificationModels);
+        Task<UserNotificationModel[]> GetUserNotification(int employeeId);
     }
 }

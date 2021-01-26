@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using AtndTrackBlazorApp.Server.Commands;
+using AtndTrackBlazorApp.Server.Commands.Employee;
 using AtndTrackBlazorApp.Server.Commands.LeaveRequest;
 using AtndTrackBlazorApp.Server.Services;
 using AtndTrackBlazorApp.Shared;
@@ -47,11 +49,12 @@ namespace AtndTrackBlazorApp.Server.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public async Task<bool> Post([FromBody]LeaveRequestModel value)
+        public async Task<bool> Post([FromBody] LeaveRequestModel value)
         {
             var result = await _mediator.Send<CommandResult<bool>>(new LeaveRequestSaveCommand() { Model = value }).ConfigureAwait(false);
-            if(result?.ResponseObj??false)
+            if (result?.ResponseObj ?? false)
             {
+               
                 _emailService.Send(value.EamilAlertTo, "Leave Request created", "Leave REquest created.");
             }
             return result.ResponseObj; //?.ResponseObj as IEnumerable<DesignationModel>;
@@ -60,7 +63,7 @@ namespace AtndTrackBlazorApp.Server.Controllers
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 
