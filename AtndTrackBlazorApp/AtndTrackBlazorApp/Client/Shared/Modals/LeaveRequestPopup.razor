@@ -1,0 +1,58 @@
+﻿
+@using AtndTrackBlazorApp.Shared.Models
+@using AtndTrackBlazorApp.Shared
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@inject HttpClient httpClient;
+
+<table>
+    <tr>
+        <th>Sno</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Reason</th>
+        <th>Status</th>
+    </tr>
+    @if (LeaveRequestModels == null)
+    {
+        <tr><td colspan="5"><p><em>Loading...</em></p></td></tr>
+    }
+    else
+    {
+        @foreach (var item in LeaveRequestModels)
+        {
+
+<tr>
+    <td>@(LeaveRequestModels.ToList().IndexOf(item)+1)</td>
+    <td>@item.DateFrom.Value.Date</td>
+    <td>@item.DateTo.Value.Date</td>
+    <td>@item.Reason</td>
+    <td>@item.Status</td>
+</tr>
+        }
+    }
+</table>
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    async Task Close() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    async Task Cancel() => await BlazoredModal.CancelAsync();
+    [Parameter]
+    public int id { get; set; }
+    [Parameter]
+    public int leaveType { get; set; }
+    [Parameter]
+    public string employeeName { get; set; }
+    private LeaveRequestModel[] LeaveRequestModels = new List<LeaveRequestModel>().ToArray();
+    protected override async Task OnInitializedAsync()
+    {
+        //if (empid <= 0)
+        //    router.NavigateTo("/LeaveRequest");
+
+        Console.WriteLine("init called.");
+        var oLeaveRequestModels = await httpClient.GetJsonAsync<LeaveRequestModel[]>("api/LeaveRequest").ConfigureAwait(false);
+        Console.WriteLine("respnose " + LeaveRequestModels);
+        LeaveRequestModels = oLeaveRequestModels.Where(o => o.EmployeeId == id && o.LeaveTypeId == leaveType).ToArray();
+        //LeaveRequestModels = response;
+    }
+}

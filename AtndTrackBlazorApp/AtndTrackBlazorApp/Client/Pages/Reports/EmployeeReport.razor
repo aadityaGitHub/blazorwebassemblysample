@@ -1,0 +1,52 @@
+﻿@page "/reports";
+
+
+@inject IReportService _empService;
+@using AtndTrackBlazorApp.Shared.Models
+@using AtndTrackBlazorApp.Shared
+
+
+@if (EmployeeModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <div class="card-deck">
+        @foreach (var employee in EmployeeModels)
+        {
+            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+                <div class="card-header">
+                    <img class="card-img-top rounded-circle empimage" style="width:50px;height:50px;" src="/images/blankEmp.png" />
+                    <h6>@employee.EmployeeName</h6>
+                    <table class="float-sm-right">
+                        <tr><td>CL:</td><td><a href=""><b @onclick="@(()=>ShowLeaves(employee.EmployeeId,(int)LeaveTypes.CL,employee.EmployeeName))">@employee.CLLeaveCount</b></a></td></tr>
+                        <tr><td>SL:</td><td><a href=""><b @onclick="@(()=>ShowLeaves(employee.EmployeeId,(int)LeaveTypes.SL,employee.EmployeeName))">@employee.SLLeaveCount</b></a></td></tr>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+@code {
+
+    [CascadingParameter] public IModalService Modal { get; set; }
+    private EmployeeLeaveReportModel[] EmployeeModels;
+    protected override async Task OnInitializedAsync()
+    {
+        await _empService.Initialize().ConfigureAwait(false);
+        EmployeeModels = _empService.Models;
+    }
+
+    void ShowLeaves(int id, int leaveType, string employeeName)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(LeaveRequestPopup.id), id);
+        parameters.Add(nameof(LeaveRequestPopup.leaveType), leaveType);
+        parameters.Add(nameof(LeaveRequestPopup.employeeName), employeeName);
+
+        Modal.Show<LeaveRequestPopup>($"{employeeName}-Leave Requests", parameters);
+    }
+}

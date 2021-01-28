@@ -24,6 +24,7 @@ namespace AtndTrackBlazorApp.Client
                .AddScoped<IAlertService, AlertService>()
                .AddScoped<IEmployeeService, EmployeeService>()
                .AddScoped<IHttpService, HttpService>()
+               .AddScoped<IReportService, ReportService>()
                .AddScoped<ILocalStorageService, LocalStorageService>();
             builder.Services.AddBlazoredModal();
             // configure http client

@@ -45,6 +45,7 @@ namespace AtndTrackBlazorApp.Server
             services.AddScoped<IOrganizationRepo, OrganizationRepo>();
             services.AddScoped<IEmployeeRepo, EmployeeRepo>();
             services.AddScoped<ILeaveRequestRepo, LeaveRequestRepo>();
+            services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.Configure<SmtpServerSetting>(Configuration.GetSection("SmtpServerSettings"));
             services.AddScoped<IEmailService, EmailService>();
